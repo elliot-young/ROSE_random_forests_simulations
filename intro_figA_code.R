@@ -240,13 +240,9 @@ while ((dim(betas)[1])<500) {
     beta_hat_den[["semieff"]][k] <- sum(w_test*RD_test*RtildeD)
     V_num[["semieff"]][k] <- sum(w_test^2*(RY_test-beta_train*RD_test)^2*RtildeD^2)
     
-    
     # ORACLE estimator
     g_0 = function(x) expit(x[,1]) + expit(x[,2]) + expit(x[,3]) + expit(x[,4]) + expit(x[,5])
     m_0 = function(x) expit(x[,1]) + expit(x[,2]) + expit(x[,3]) + expit(x[,4]) + expit(x[,5])
-    
-    #rdf_test_ora_set = rdf_test[abs(rdf_test$D-m_0(rdf_test[,1:5]))<0.00000001,]
-    #rdf_train_ora_set = rdf_train[abs(rdf_train$D-m_0(rdf_train[,1:5]))<0.00000001,]
     
     RY_test_ora = rdf_test$Y - 2*(expit(rdf_test$X.1)+expit(rdf_test$X.2)+expit(rdf_test$X.3)+expit(rdf_test$X.4)+expit(rdf_test$X.5))
     RD_test_ora = rdf_test$D - 1*(expit(rdf_test$X.1)+expit(rdf_test$X.2)+expit(rdf_test$X.3)+expit(rdf_test$X.4)+expit(rdf_test$X.5))
@@ -257,14 +253,12 @@ while ((dim(betas)[1])<500) {
     rdf_train_p[rdf_train_p<0.01] = 0.01
     RD_train_ora = rdf_train$D - 1*(expit(rdf_train$X.1)+expit(rdf_train$X.2)+expit(rdf_train$X.3)+expit(rdf_train$X.4)+expit(rdf_train$X.5))
     xi_train_ora = RD_train_ora
-    #
     
     RY_test_ora = RY_test_ora
     xi_test_ora = xi_test_ora
     DELTA = AABBCC
     w_test_ora <- (DELTA^2+(2*DELTA+1)*rdf_test_p)/(DELTA^4+((DELTA+1)^4-DELTA^4)*rdf_test_p) * sqrt(rdf_test_p)
     
-    #
     beta_hat_num[["rose_ora"]][k] <- sum( w_test_ora * RY_test_ora*xi_test_ora)
     beta_hat_den[["rose_ora"]][k] <- sum( w_test_ora * xi_test_ora*xi_test_ora)
     V_num[["rose_ora"]][k] <- sum( w_test_ora^2 * (RY_test_ora-1*xi_test_ora)^2*xi_test_ora^2)
@@ -276,10 +270,9 @@ while ((dim(betas)[1])<500) {
     RY_test_ora = RY_test_ora
     xi_test_ora = xi_test_ora
     DELTA = AABBCC
-    sigma_test_orasq = 1/sqrt(rdf_test_p) * ( DELTA^2 + (2*DELTA+1)/(1+
-                                                                       (DELTA+1)/(DELTA) * (1-rdf_test_p)/(rdf_test_p) * exp(rdf_test_p/2 * (1/(DELTA+1)^2 - 1/(DELTA)^2) * (xi_test_ora^2))                           
+    sigma_test_orasq = 1/sqrt(rdf_test_p) * ( DELTA^2 + (2*DELTA+1)/(1+(DELTA+1)/(DELTA) * (1-rdf_test_p)/(rdf_test_p) * exp(rdf_test_p/2 * (1/(DELTA+1)^2 - 1/(DELTA)^2) * (xi_test_ora^2))                           
     )  )
-    #
+    
     beta_hat_num[["eff_ora"]][k] <- sum( 1/sigma_test_orasq * RY_test_ora*xi_test_ora)
     beta_hat_den[["eff_ora"]][k] <- sum( 1/sigma_test_orasq * xi_test_ora*xi_test_ora)
     V_num[["eff_ora"]][k] <- sum( 1/sigma_test_orasq^2 * (RY_test_ora-1*xi_test_ora)^2*xi_test_ora^2)
@@ -294,7 +287,7 @@ while ((dim(betas)[1])<500) {
   vars = rbind(vars, vars_single)
   cvs_rss = rbind(cvs_rss, as.data.frame(t(unlist(CV_rss))))
   
-} # this is the one that works
+}
 
 
 
